@@ -38,25 +38,25 @@ class DatabaseSeeder extends Seeder
         // Asignar rol de admin
         $admin->assignRole($adminRole);
 
-        // // Crear los registros para cada modelo
-        // Category::factory(10)->create();
-        // Feature::factory(100)->create();
-        // Location::factory(100)->create();
-        // Owner::factory(100)->create();
-        // Price::factory(100)->create();
-        // Type::factory(20)->create();
-        // Service::factory(14)->create();
+        // Crear los registros para cada modelo
+        Category::factory(10)->create();
+        Feature::factory(100)->create();
+        Location::factory(100)->create();
+        Owner::factory(100)->create();
+        Price::factory(100)->create();
+        Type::factory(20)->create();
+        Service::factory(14)->create();
         
-        // // Crear 100 propiedades después de tener los otros registros
-        // Property::factory(100)->create();
+        // Crear 100 propiedades después de tener los otros registros
+        Property::factory(100)->create();
 
-        // // Crear usuarios adicionales y asignarles rol de cliente
-        // User::factory(100)->create()->each(function ($user) {
-        //     $user->assignRole('cliente');
-        // });
+        // Crear usuarios adicionales y asignarles rol de cliente
+        User::factory(100)->create()->each(function ($user) {
+            $user->assignRole('cliente');
+        });
 
         // Crear clientes y reportes
-        // Client::factory(50)->create();
-        // Report::factory(200)->create();
+        Client::factory(50)->create();
+        Report::factory(200)->create();
     }
 }

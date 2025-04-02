@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('image_urls');
             $table->json('seller_images');
             $table->boolean('is_offer')->default(false);
-
+            $table->string('slug')->unique();
             $table->dateTime('expiration_date');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('type_id')->constrained('types')->onDelete('cascade');

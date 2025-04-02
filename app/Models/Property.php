@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -33,6 +34,43 @@ class Property extends Model
         'is_offer' => 'boolean',
         'expiration_date' => 'datetime'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($property) {
+            $property->slug = $property->generateSlug();
+        });
+
+        static::updating(function ($property) {
+            $property->slug = $property->generateSlug();
+        });
+    }
+
+    protected function generateSlug(): string
+    {
+        $type = $this->type()->first();
+        $category = $this->category()->first();
+        $price = $this->price()->first();
+        
+        $parts = [
+            $type?->name ?? '',
+            $this->status ?? '',
+            $category?->name ?? '',
+            $price?->priceUSD ? '$' . number_format($price->priceUSD, 0) : ''
+        ];
+
+        $baseSlug = Str::slug(implode(' ', array_filter($parts)));
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (static::where('slug', $slug)->where('id', '!=', $this->id)->exists()) {
+            $slug = $baseSlug . '-' . $counter++;
+        }
+
+        return $slug;
+    }
 
     public function category(): BelongsTo
     {
